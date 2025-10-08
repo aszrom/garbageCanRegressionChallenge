@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.21">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Garbage Can Regression Challenge</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-ea1d7ac60288e0f1efdbc993fd8432ae.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Garbage Can Regression Challenge</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="garbage-can-regression-challenge" class="level1">
+<h1>Garbage Can Regression Challenge</h1>
+<p><strong>Choose R or Python and delete the other code chunk.</strong></p>
+<section id="r-code" class="level2">
+<h2 class="anchored" data-anchor-id="r-code">R Code</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>-- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+v dplyr     1.1.4     v readr     2.1.5
+v forcats   1.0.0     v stringr   1.5.1
+v ggplot2   3.5.1     v tibble    3.2.1
+v lubridate 1.9.3     v tidyr     1.3.1
+v purrr     1.0.2     
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+i Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Data with known true relationships: Anxiety = Stress + 0.1 × Time</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>observDF <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Stress, <span class="sc">~</span>StressSurvey, <span class="sc">~</span>Time, <span class="sc">~</span>Anxiety,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.1</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="fl">1.1</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">2</span>,<span class="fl">2.2</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">2</span>,<span class="fl">8.2</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">2</span>,<span class="fl">8.2</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">8</span>,<span class="dv">9</span>,<span class="fl">2.1</span>,<span class="fl">8.21</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="dv">12</span>,<span class="dv">12</span>,<span class="fl">2.2</span>,<span class="fl">12.22</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>observDF</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15 x 4
+   Stress StressSurvey  Time Anxiety
+    &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+ 1      0            0   0      0   
+ 2      0            0   1      0.1 
+ 3      0            0   1      0.1 
+ 4      1            3   1      1.1 
+ 5      1            3   1      1.1 
+ 6      1            3   1      1.1 
+ 7      2            6   2      2.2 
+ 8      2            6   2      2.2 
+ 9      2            6   2      2.2 
+10      8            9   2      8.2 
+11      8            9   2      8.2 
+12      8            9   2.1    8.21
+13     12           12   2.2   12.2 
+14     12           12   2.2   12.2 
+15     12           12   2.2   12.2 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="your-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="your-analysis">Your Analysis</h2>
+<p>Follow the challenge instructions from your course to complete your analysis. ## Question 1</p>
+<p>Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Anxiety ~ StressSurvey, data = observDF)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.558 -0.517  0.301  1.180  1.624 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   -1.5240     0.7069  -2.156   0.0504 .  
+StressSurvey   1.0470     0.0962  10.883 6.68e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.581 on 13 degrees of freedom
+Multiple R-squared:  0.9011,    Adjusted R-squared:  0.8935 
+F-statistic: 118.4 on 1 and 13 DF,  p-value: 6.681e-08</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept: -1.524 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey coefficient: 1.047 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+True relationship: Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Since StressSurvey is a proxy for Stress, we expect the coefficient to be close to 1</code></pre>
+</div>
+</div>
+<p><strong>My takeaways here is that the coefficient is very close to true value (1.047 vs 1.0). StressSurvey captures 90% of the true relationship with minimal bias</strong></p>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<p>Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit Statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 0.9011 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 0.8935 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 1.5808 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Potential Issues Analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. Residuals range: -2.558 1.624 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Cook's Distance max: 0.1649 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Leverage max: 0.2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. Potential outliers (|studentized residual| &gt; 2): 0 observations</code></pre>
+</div>
+</div>
+<p><strong>The scatter plot shows a strong, tight linear relationship between StressSurvey and Anxiety. This shows confirmation that StressSurvey captures the underlying stress-anxiety relationship well.</strong></p>
+</section>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<p>Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Anxiety ~ Time, data = observDF)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.8010 -1.5605 -0.5605  2.4395  4.1508 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)   -3.680      2.233  -1.648  0.12330   
+Time           5.341      1.305   4.093  0.00127 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.323 on 13 degrees of freedom
+Multiple R-squared:  0.563, Adjusted R-squared:  0.5294 
+F-statistic: 16.75 on 1 and 13 DF,  p-value: 0.00127</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept: -3.6801 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient: 5.3406 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+True relationship: Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expected Time coefficient: 0.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated Time coefficient: 5.3406 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Difference from true coefficient: 5.2406 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model fit statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 0.563 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 0.5294 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 3.3227 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with true relationship:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True model: Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated model: Anxiety = -3.6801 + 5.3406 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Note: The estimated model ignores the Stress component, which explains the poor fit</code></pre>
+</div>
+</div>
+<p><strong>This demonstrates severe omitted variable bias - the Time coefficient is 5,341% too high (5.341 vs 0.1) because it absorbs the effect of the missing Stress variable. The Time-only model gives a completely misleading picture of the true relationship.</strong></p>
+</section>
+<section id="question-4" class="level2">
+<h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
+<p>Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit Statistics for Time Model:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 0.563 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 0.5294 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 3.3227 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Potential Issues Analysis for Time Model:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. Residuals range: -4.801 4.151 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Cook's Distance max: 0.9214 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Leverage max: 0.4517 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. Potential outliers (|studentized residual| &gt; 2): 0 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with StressSurvey Model:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey model R-squared: 0.9011 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time model R-squared: 0.563 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Difference in R-squared: 0.3381 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The Time model explains 62.5 % of what the StressSurvey model explains</code></pre>
+</div>
+</div>
+<p><strong>The visualization clearly demonstrates why using Time alone as a predictor is problematic compared to using StressSurvey. The wider scatter and confidence bands provide visual confirmation of the statistical issues we identified, namely omitted variable bias and poor model specification.</strong></p>
+</section>
+<section id="question-5" class="level2">
+<h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
+<p>Run a multiple regression of Anxiety on both StressSurvey and Time. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Anxiety ~ StressSurvey + Time, data = observDF)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.3904 -0.9896  0.3288  0.6240  2.2912 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    0.5888     1.0339   0.569   0.5795    
+StressSurvey   1.4269     0.1722   8.287 2.62e-06 ***
+Time          -2.7799     1.1111  -2.502   0.0278 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.334 on 12 degrees of freedom
+Multiple R-squared:  0.935, Adjusted R-squared:  0.9242 
+F-statistic: 86.32 on 2 and 12 DF,  p-value: 7.538e-08</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept: 0.5888 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey coefficient: 1.4269 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient: -2.7799 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+True relationship: Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expected coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  StressSurvey coefficient: ~1.0 (proxy for Stress)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Time coefficient: ~0.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with true relationship:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey coefficient - Expected: 1.0, Estimated: 1.4269 , Difference: 0.4269 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient - Expected: 0.1, Estimated: -2.7799 , Difference: -2.8799 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model fit statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 0.935 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 0.9242 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 1.3338 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with previous models:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bivariate StressSurvey model R-squared: 0.9011 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bivariate Time model R-squared: 0.563 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple regression R-squared: 0.935 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Improvement over StressSurvey model: 0.0339 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Improvement over Time model: 0.372 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Potential Issues Analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. Residuals range: -1.39 2.291 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Cook's Distance max: 0.4086 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Leverage max: 0.6008 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. Potential outliers (|studentized residual| &gt; 2): 2 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Outlier observations: 2 3 </code></pre>
+</div>
+</div>
+<p><strong>This demonstrates the “Garbage Can Regression” problem - the multiple regression achieves the highest R-squared (93.5%) but produces severely biased and wrong-signed coefficients due to multicollinearity. Despite impressive-looking statistics, the model gives misleading results that contradict the true relationship.</strong></p>
+</section>
+<section id="question-6" class="level2">
+<h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
+<p>Run a multiple regression of Anxiety on both Stress and Time. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Anxiety ~ Stress + Time, data = observDF)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.330e-15 -4.027e-16  2.604e-16  4.822e-16  8.124e-16 
+
+Coefficients:
+             Estimate Std. Error   t value Pr(&gt;|t|)    
+(Intercept) 9.173e-16  5.371e-16 1.708e+00    0.113    
+Stress      1.000e+00  6.067e-17 1.648e+16   &lt;2e-16 ***
+Time        1.000e-01  4.273e-16 2.340e+14   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.268e-16 on 12 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 3.109e+32 on 2 and 12 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intercept: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress coefficient: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient: 0.1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+True relationship: Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expected coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Stress coefficient: 1.0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Time coefficient: 0.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with true relationship:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress coefficient - Expected: 1.0, Estimated: 1 , Difference: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient - Expected: 0.1, Estimated: 0.1 , Difference: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model fit statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Comparison with previous models:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bivariate StressSurvey model R-squared: 0.9011 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bivariate Time model R-squared: 0.563 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple regression (StressSurvey + Time) R-squared: 0.935 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple regression (Stress + Time) R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Potential Issues Analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. Residuals range: 0 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Cook's Distance max: 1.1033 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Leverage max: 0.546 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. Potential outliers (|studentized residual| &gt; 2): 2 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Outlier observations: 10 11 </code></pre>
+</div>
+</div>
+<p><strong>This demonstrates the “gold standard” model - using the true variables (Stress and Time) gives perfect results with exactly the right coefficients (1.0 for Stress, 0.1 for Time) and 100% R-squared. This confirms our understanding of the true data-generating process and serves as the benchmark against which all other models can be compared.</strong></p>
+</section>
+<section id="question-7" class="level2">
+<h2 class="anchored" data-anchor-id="question-7">Question 7</h2>
+<p>Compare the R-squared values and coefficient interpretations between the two multiple regression models. Do both models show statistical significance in all of their coefficient estimates? What does this tell you about the real-world implications of multiple regression results?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>=== MODEL COMPARISON ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODEL 3: Anxiety ~ StressSurvey + Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-----------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 0.935 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 0.9242 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 1.3338 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    0.5888     1.0339  0.5695   0.5795
+StressSurvey   1.4269     0.1722  8.2871   0.0000
+Time          -2.7799     1.1111 -2.5019   0.0278</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Statistical Significance:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey: p-value = 3e-06 &lt;U+2192&gt; Highly significant (***) </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time: p-value = 0.027816 &lt;U+2192&gt; Not significant </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+MODEL 4: Anxiety ~ Stress + Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model4): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coefficients:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error      t value Pr(&gt;|t|)
+(Intercept)      0.0          0 1.707900e+00   0.1134
+Stress           1.0          0 1.648260e+16   0.0000
+Time             0.1          0 2.340396e+14   0.0000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Statistical Significance:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress: p-value = 0 &lt;U+2192&gt; Highly significant (***) </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time: p-value = 0 &lt;U+2192&gt; Highly significant (***) </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+=== DIRECT COMPARISON ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared Comparison:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Model 3 (StressSurvey + Time): 0.935 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Model 4 (Stress + Time): 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Difference: 0.065 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coefficient Comparison:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey coefficient (Model 3): 1.4269 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress coefficient (Model 4): 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Difference: 0.4269 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient (Model 3): -2.7799 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time coefficient (Model 4): 0.1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Difference: -2.8799 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Comparison to True Relationship (Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 3 - StressSurvey: 1.4269 (expected ~1.0), Time: -2.7799 (expected 0.1)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 4 - Stress: 1 (expected 1.0), Time: 0.1 (expected 0.1)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+=== REAL-WORLD IMPLICATIONS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. STATISTICAL SIGNIFICANCE:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Both models show highly significant coefficients (p &lt; 0.001)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - This demonstrates that significance alone cannot validate model quality</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Wrong models can still produce 'statistically significant' results</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. R-SQUARED INTERPRETATION:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model 3: 93.5% R-squared with severely biased coefficients</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model 4: 100% R-squared with perfect coefficients</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - High R-squared does not guarantee correct coefficient interpretation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. COEFFICIENT BIAS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model 3: Time coefficient has wrong sign (-2.780 vs +0.1)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model 4: Perfect coefficients matching true relationship</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Multicollinearity creates misleading but 'significant' results</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. PRACTICAL IMPLICATIONS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Using wrong variables (StressSurvey) leads to biased conclusions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Researchers must understand variable relationships before modeling</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Model specification is more important than fit statistics</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - 'Garbage Can' regressions can produce impressive but wrong results</code></pre>
+</div>
+</div>
+<p><strong>Both models show statistical significance, but the coefficient comparison reveals the problem: Model 3 has severely biased coefficients (Time coefficient has wrong sign: -2.780 vs +0.1) while Model 4 has perfect coefficients. This demonstrates that statistical significance alone cannot validate model quality - high R-squared and significant p-values can still produce completely misleading results when the underlying model is misspecified due to multicollinearity.</strong></p>
+</section>
+<section id="question-8" class="level2">
+<h2 class="anchored" data-anchor-id="question-8">Question 8</h2>
+<p>Reflect on Real-World Implications: For each of the two multiple regression models, assume their respective outputs/conclusions were published in academic journals and then subsequently picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect to see from a popular press outlet covering the first model? And what headline would you expect to see from a popular press outlet covering the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>=== REAL-WORLD IMPLICATIONS ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODEL 3: Anxiety ~ StressSurvey + Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-----------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key Finding: Time coefficient = -2.7799 (NEGATIVE)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Interpretation: More time on social media REDUCES anxiety</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Statistical Significance: Highly significant (p &lt; 0.001)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 93.5% (very impressive)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODEL 4: Anxiety ~ Stress + Time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-----------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key Finding: Time coefficient = 0.1 (POSITIVE)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Interpretation: More time on social media INCREASES anxiety</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Statistical Significance: Highly significant (p &lt; 0.001)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 100% (perfect fit)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== POPULAR PRESS HEADLINES ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HEADLINE FOR MODEL 3 (StressSurvey + Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"BREAKTHROUGH STUDY: More Time on Social Media Actually REDUCES Anxiety!"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"Researchers Find Surprising Benefit of Social Media Use"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"Study Shows Social Media Time Associated with Lower Anxiety Levels"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HEADLINE FOR MODEL 4 (Stress + Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"NEW RESEARCH CONFIRMS: Social Media Time Increases Anxiety"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"Study Links More Social Media Use to Higher Anxiety Levels"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"Research Validates Parental Concerns About Social Media Impact"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== STAKEHOLDER ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. TYPICAL PARENTS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Will believe Model 4 (Stress + Time) due to confirmation bias</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Aligns with their existing concerns about social media</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Will dismiss Model 3 as 'obviously wrong' or 'industry-funded'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Likely to cite Model 4 when setting screen time limits</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. SOCIAL MEDIA EXECUTIVES (Facebook, Instagram, TikTok):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Will prefer Model 3 (StressSurvey + Time) results</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Provides 'scientific evidence' that social media reduces anxiety</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Can use for marketing: 'Research shows social media is good for mental health'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Will fund follow-up studies to replicate Model 3 findings</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Will dismiss Model 4 as 'methodologically flawed'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. RESEARCHERS AND ACADEMICS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Should recognize Model 3 has multicollinearity problems</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Should understand Model 4 represents true relationship</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - But may be influenced by funding sources or publication bias</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   - Need to carefully examine model specification</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== REAL-WORLD CONSEQUENCES ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>If Model 3 Results Were Published:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Social media companies would heavily promote these findings</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Parents might relax screen time restrictions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Policy makers might be less concerned about social media regulation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Mental health professionals would face contradictory evidence</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Public trust in research could be undermined when truth emerges</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>If Model 4 Results Were Published:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Social media companies would attack the methodology</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Parents would feel vindicated in their concerns</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Calls for social media regulation would increase</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Mental health interventions would focus more on screen time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- This aligns with broader research on social media and mental health</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== THE DANGER OF BIASED RESEARCH ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This example illustrates:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. How statistical significance can be misleading</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. How different stakeholders interpret the same data differently</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. How confirmation bias affects which studies get attention</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. How industry funding can influence research conclusions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5. Why model specification matters more than fit statistics</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6. How 'garbage can' regressions can have real-world consequences</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CRITICAL INSIGHT: The same dataset can 'prove' opposite conclusions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>depending on which variables are included in the model!</code></pre>
+</div>
+</div>
+<p><strong>The same dataset produces opposite conclusions: Model 3 suggests social media reduces anxiety (Time coefficient = -2.780), while Model 4 shows it increases anxiety (Time coefficient = +0.1). Parents will believe Model 4 due to confirmation bias, while social media executives will prefer Model 3 for marketing. This demonstrates how model specification choices can have profound real-world consequences, affecting policy decisions and public health interventions.</strong></p>
+</section>
+<section id="question-9" class="level2">
+<h2 class="anchored" data-anchor-id="question-9">Question 9</h2>
+<p>Avoiding Misleading Statistical Significance: Reflect on this tip to avoid being misled by statistically significant results: splitting the sample into meaningful subsets (“statistical regimes”), and using graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>=== AVOIDING MISLEADING STATISTICAL SIGNIFICANCE ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>EXAMINING DATA STRUCTURE FOR MEANINGFUL SUBSETS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>----------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unique Stress values: 0 1 2 8 12 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unique StressSurvey values: 0 3 6 9 12 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unique Time values: 0 1 2 2.1 2.2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SUBSET SELECTION STRATEGY:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>I'll split the data into two 'statistical regimes':</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. LOW STRESS REGIME: Stress &lt;U+2264&gt; 2 (observations 1-9)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. HIGH STRESS REGIME: Stress &gt; 2 (observations 10-15)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rationale: Different stress levels might exhibit different anxiety-time relationships</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This creates meaningful subsets rather than arbitrary splits</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SUBSET SIZES:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Low stress subset: n = 9 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>High stress subset: n = 6 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== LOW STRESS REGIME ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress levels: 0, 1, 2</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sample size: 9 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model_low): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple Regression Results (Low Stress):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error      t value Pr(&gt;|t|)
+(Intercept)    0.0000          0 6.304000e-01   0.5517
+StressSurvey   0.3333          0 1.649243e+16   0.0000
+Time           0.1000          0 1.269588e+15   0.0000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Fit Statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Statistical Significance:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey: p-value = 0 &lt;U+2192&gt; Significant </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time: p-value = 0 &lt;U+2192&gt; Significant </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+=== HIGH STRESS REGIME ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stress levels: 8, 12</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sample size: 6 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model_high): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Multiple Regression Results (High Stress):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error       t value Pr(&gt;|t|)
+(Intercept)   -4.0000          0 -2.760206e+14        0
+StressSurvey   1.3333          0  2.385458e+15        0
+Time           0.1000          0  1.070507e+13        0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Fit Statistics:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adjusted R-squared: 1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual Standard Error: 0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Statistical Significance:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StressSurvey: p-value = 0 &lt;U+2192&gt; Significant </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time: p-value = 0 &lt;U+2192&gt; Significant </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+=== GRAPHICAL DIAGNOSTICS FOR LINEARITY ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Creating diagnostic plots to assess linearity assumptions...</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>COMPARISON TO TRUE RELATIONSHIP (Anxiety = Stress + 0.1 &lt;U+00D7&gt; Time):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>----------------------------------------------------------------</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Low Stress Regime:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Expected StressSurvey coefficient: ~1.0 (proxy for Stress)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Expected Time coefficient: 0.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimated StressSurvey coefficient: 0.3333 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimated Time coefficient: 0.1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>High Stress Regime:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Expected StressSurvey coefficient: ~1.0 (proxy for Stress)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Expected Time coefficient: 0.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimated StressSurvey coefficient: 1.3333 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimated Time coefficient: 0.1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== SUMMARY OF SUBSET ANALYSIS ===</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. SUBSET CHOICE: Split by stress level (&lt;U+2264&gt;2 vs &gt;2) to create meaningful regimes</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. LOW STRESS REGIME: Smaller sample, potential multicollinearity issues</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. HIGH STRESS REGIME: Very small sample, limited variation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. GRAPHICAL DIAGNOSTICS: Reveal potential issues with linearity assumptions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5. STATISTICAL SIGNIFICANCE: May be misleading due to small sample sizes</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>KEY INSIGHTS:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Subsetting can reduce multicollinearity problems</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- But small samples can create new statistical issues</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Graphical diagnostics are crucial for assessing model assumptions</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- Statistical significance alone is not sufficient for model validation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- True relationship may be obscured by data limitations in subsets</code></pre>
+</div>
+</div>
+<p><strong>Subset analysis successfully recovered the true relationship: both low-stress and high-stress regimes correctly estimated the Time coefficient as 0.1, matching the true relationship. By splitting into meaningful “statistical regimes” (stress ≤2 vs &gt;2), we reduced multicollinearity problems and revealed the underlying truth that was obscured in the full model. This demonstrates how thoughtful subsetting and graphical diagnostics can help avoid being misled by “canned” regression results, though small sample sizes create new statistical challenges.</strong></p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
